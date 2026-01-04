@@ -9,6 +9,8 @@
                             <th scope="col" class="px-4 py-3 border border-gray-500">S. No.</th>
                             <th scope="col" class="px-4 py-3 border border-gray-500">Name</th>
                             <th scope="col" class="px-4 py-3 border border-gray-500">Amount</th>
+                            <th scope="col" class="px-4 py-3 border border-gray-500">Gaadi ID</th>
+                            <th scope="col" class="px-4 py-3 border border-gray-500">Mode</th>
                             <th scope="col" class="px-4 py-3 border border-gray-500">Time</th>
                         </tr>
                     </thead>
@@ -16,7 +18,9 @@
                       <?php 
                       include "../include/connect.php";
 
-                      $sql = "SELECT * FROM `person_balance` WHERE type = 2 ORDER BY `person_balance`.`id` DESC";
+                      $sql = "SELECT * FROM `transfertoowner` as tto
+                      JOIN user ON tto.senderid = user.id
+                      ORDER BY tto.timestamp DESC;";
                       $stmt = $conn->prepare($sql);
                       if ($stmt) {
                           if ($stmt->execute()) {
@@ -27,9 +31,25 @@
                       
                               <tr class="border">
                               <td scope="row" class="px-4 py-3 text-gray-600 whitespace-nowrap border"><?php echo $i++; ?> </td>
-                              <td scope="row" class="px-4 py-3 text-gray-600 whitespace-nowrap border"><?php echo getReceiverName($row['person_id']); ?> </td>
+                              <td scope="row" class="px-4 py-3 text-gray-600 whitespace-nowrap border"><?php echo $row['username']; ?> </td>
                               <td scope="row" class="px-4 py-3 text-gray-600 whitespace-nowrap border"><?php echo $row['amount']; ?></td>
-                              <td scope="row" class="px-4 py-3 text-gray-600 whitespace-nowrap border"><?php echo $row['timestamp']; ?></td>
+                              <td scope="row" class="px-4 py-3 text-gray-600 whitespace-nowrap border"><?php echo $row['gaadi']; ?></td>
+                              <td scope="row" class="px-4 py-3 text-gray-600 whitespace-nowrap border">
+                                <?php 
+                                  if($row['mode'] == 1){
+                                    echo "Cash";
+                                  } elseif($row['mode'] == 2){
+                                    echo "Direct Bank Transfer / UPI";
+                                  } else {
+                                    echo "N/A";
+                                  }
+                                ?>
+                              <td scope="row" class="px-4 py-3 text-gray-600 whitespace-nowrap border">
+                                  <?php 
+                                      $date = new DateTime($row['timestamp']);
+                                      echo $date->format('d-m-Y H:i:s');
+                                  ?>
+                              </td>
                 
                             </tr>        
                             

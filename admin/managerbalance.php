@@ -2,8 +2,6 @@
 include("../include/functions/session.php");
 session($allowmanger = 0);
 session_timeout();
-error_reporting(E_ALL); 
-ini_set('display_errors', 1);
 
 ?>
 

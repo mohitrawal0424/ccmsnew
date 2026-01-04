@@ -23,8 +23,9 @@
                     <!-- alert div  -->
                     <div id="alertdiv"></div>
                     <!-- alert div  -->
-                    <input type="hidden" name="personid" id="personid">
+                    <input type="hidden" name="managerid" id="managerid">
                     <input type="hidden" name="availAmount" id="availAmount">
+                    <input type="hidden" name="gaadi_id" id="gaadi_id">
                     <div>
                         <label for="tamount" class="block mb-2 text-sm font-medium text-white">Amount</label>
                         <input type="number" name="tamount" id="tamount" class="bg-gray-50 border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 border-gray-500 placeholder-gray-700 text-gray-700" placeholder="Enter Amount" required />

@@ -678,7 +678,6 @@ if (isset($_POST["schemesubmit"])) {
 
 // Sold/Close entry in DB of Gaddi
 if (isset($_GET["soldCloseGaadi"])) {
-    // print_r($_GET);die;
 
     $entry = 1;
     $gaadiId = (int)$_GET["gaadiId"];
@@ -944,21 +943,22 @@ if (isset($_POST['addPersonSubmit'])) {
     }
 }
 
-// code to add person into table
-if (isset($_GET['availAmount']) and isset($_GET['amount']) and isset($_GET['mode']) and isset($_GET['personId'])) {
+// Transfer amount from manager to admin
+if (isset($_GET['availAmount']) and isset($_GET['amount']) and isset($_GET['mode']) and isset($_GET['managerId_1']) and isset($_GET['gaadiId'])) {
     include "../include/connect.php";
-
-    // $availAmount = (int)$_GET['availAmount'];
+    
+    $availAmount = (int)$_GET['availAmount'];
     $amount = (int)$_GET['amount'];
-    $personId = (int)$_GET['personId'];
-    // $mode = (int)$_GET['mode'];
-    $type = 2;
+    $managerId = (int)$_GET['managerId_1'];
+    $gaadiId = (int)$_GET['gaadiId'];
+    $mode = (int)$_GET['mode'];
+    // echo json_encode($availAmount, $amount, $managerId, $gaadiId, $mode);
 
-    $sql = "INSERT INTO `person_balance`(`person_id`, `amount`, `type`) VALUES ( ? , ? , ? )";
+    $sql = "INSERT INTO `transfertoowner`(`senderid`, `amount`, `mode`, `gaadi`) VALUES ( ? , ? , ? , ? )";
     $stmt = $conn->prepare($sql);
 
     if ($stmt) {
-        $stmt->bind_param("iii", $personId, $amount, $type);
+        $stmt->bind_param("iiii", $managerId, $amount, $mode, $gaadiId);
         if ($stmt->execute()) {
             $res = [
                 'status' => true,

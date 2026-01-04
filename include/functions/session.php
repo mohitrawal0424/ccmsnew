@@ -1,6 +1,6 @@
 <?php
 
-function session($allowManager = 1, $redirect = 'staff.php')
+function session($allowManager = 1, $redirect = 'dashboardproduct.php')
 {
     session_start();
     if (isset($_SESSION['username'])) {

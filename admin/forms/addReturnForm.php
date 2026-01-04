@@ -251,7 +251,35 @@
                 </th>
                 <td class="px-3 py-2 text-gray-700">
                   <?php
-                  echo $amountPaidTotal;
+                $sqltypewise = "
+                  SELECT 
+                      gaadi,
+                      SUM(CASE WHEN type = 1 THEN amount ELSE 0 END) AS cash_amount,
+                      SUM(CASE WHEN type = 2 THEN amount ELSE 0 END) AS online_amount
+                  FROM amountpaidgaadis
+                  WHERE gaadi = ?
+                  GROUP BY gaadi
+              ";
+
+              $stmttypewise = $conn->prepare($sqltypewise);
+              $stmttypewise->bind_param("i", $recId);
+              $stmttypewise->execute();
+
+              $result = $stmttypewise->get_result();
+
+              $cashAmount = 0;
+              $onlineAmount = 0;
+
+              if ($result && $result->num_rows > 0) {
+                  $row = $result->fetch_assoc();
+                  $cashAmount   = $row['cash_amount'];
+                  $onlineAmount = $row['online_amount'];
+              }
+
+              echo "Cash: " . $cashAmount . "<br>";
+              echo "Online: " . $onlineAmount . "<br>";
+              echo "Total: " . $amountPaidTotal;
+
                   ?>
                 </td>
               </tr>
